@@ -8,6 +8,14 @@ from datetime import datetime, timedelta
 from langchain_core.tools import tool
 
 
+# Global state for simulation
+IS_UNHEALTHY = True
+
+def reset_simulation():
+    """Resets all services to unhealthy state for a new simulation run."""
+    global IS_UNHEALTHY
+    IS_UNHEALTHY = True
+
 @tool
 def mock_get_service_logs(service_name: str) -> str:
     """
@@ -23,6 +31,15 @@ def mock_get_service_logs(service_name: str) -> str:
     t4 = (now - timedelta(minutes=2)).strftime("%Y-%m-%d %H:%M:%S")
     t5 = (now - timedelta(minutes=1)).strftime("%Y-%m-%d %H:%M:%S")
     
+    if not IS_UNHEALTHY:
+        return (
+            f"{t1} INFO: Health check passed.\n"
+            f"{t2} INFO: Connection pool stable.\n"
+            f"{t3} INFO: Request processed successfully in 45ms.\n"
+            f"{t4} INFO: Cache hit ratio at 98%.\n"
+            f"{t5} INFO: Service operating normally."
+        )
+
     service_name = service_name.lower()
     if "payment" in service_name or "pagos" in service_name:
         return (
@@ -52,6 +69,9 @@ def mock_get_service_metrics(service_name: str) -> str:
     Args:
         service_name: El nombre del servicio.
     """
+    if not IS_UNHEALTHY:
+        return "CPU_USAGE: 15% | MEMORY_USAGE: 30% | ACTIVE_CONNECTIONS: 45/500"
+
     service_name = service_name.lower()
     if "payment" in service_name or "pagos" in service_name:
         return "CPU_USAGE: 95% | MEMORY_USAGE: 70% | ACTIVE_CONNECTIONS: 450/500"
@@ -69,6 +89,8 @@ def mock_scale_service(service_name: str) -> str:
     Args:
         service_name: El nombre del servicio a escalar.
     """
+    global IS_UNHEALTHY
+    IS_UNHEALTHY = False
     return f"Success: Scaled {service_name}, added 10 replicas. Now everything is working fine."
 
 
@@ -79,6 +101,8 @@ def mock_restart_service(service_name: str) -> str:
     Args:
         service_name: El nombre del servicio a reiniciar.
     """
+    global IS_UNHEALTHY
+    IS_UNHEALTHY = False
     return f"Success: Restarted {service_name}. Now everything is working fine." 
 
 DEVOPS_TOOLS = [mock_get_service_logs, mock_get_service_metrics, mock_scale_service, mock_restart_service]

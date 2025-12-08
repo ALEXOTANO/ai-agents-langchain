@@ -10,7 +10,7 @@ from langgraph.graph import StateGraph, END
 
 from src.config import get_llm
 from src.state import AgentState
-from src.mocks.devops_tools import mock_get_service_logs, mock_get_service_metrics
+from src.mocks.devops_tools import mock_get_service_logs, mock_get_service_metrics, reset_simulation
 
 
 
@@ -63,6 +63,7 @@ def create_triage_agent():
 
     def fetch_logs_node(state: AgentState):
         """Fetch logs for the identified service."""
+
         user_input = state["messages"][-1]['content']
         current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
@@ -113,6 +114,7 @@ def create_triage_agent():
         ]
         
         response = llm.invoke(messages)
+        reset_simulation()
         
         return {"messages": [response]}
     
