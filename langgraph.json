@@ -1,0 +1,11 @@
+{
+  "$schema": "https://langchain-ai.github.io/langgraph/langgraph.schema.json",
+  "graphs": {
+    "devops_agent": "./src/agents/devops_agent.py:create_devops_agent",
+    "triage_chain": "./src/agents/triage_chain.py:create_triage_agent"
+  },
+  "env": ".env",
+  "dependencies": [
+    "./pyproject.toml"
+  ]
+}
