@@ -7,6 +7,7 @@ It extracts the service name, fetches logs and metrics, and generates a report.
 import datetime
 from langchain_core.messages import HumanMessage, SystemMessage
 from langgraph.graph import StateGraph, END
+from typing import Literal
 
 from src.config import get_llm
 from src.state import AgentState
@@ -120,7 +121,7 @@ def create_triage_agent():
         
         return {"messages": [response]}
     
-    def route_request(state: AgentState):
+    def route_request(state: AgentState) -> Literal["fetch_logs", "handle_refusal"]:
         """Decide next step based on service_name."""
         service = state.get("service_name", "unknown")
         if service == "unknown":
