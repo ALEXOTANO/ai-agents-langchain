@@ -36,7 +36,7 @@ No sugieras soluciones, solo reporta los hechos.
 
 def create_triage_agent():
     """
-    Creates the Triage pipeline graph (sequential flow).
+    Creates the Triage agent
     Returns:
         Compiled LangGraph StateGraph
     """
@@ -117,7 +117,6 @@ def create_triage_agent():
         ]
         
         response = llm.invoke(messages)
-        reset_simulation()
         
         return {"messages": [response]}
     
