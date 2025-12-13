@@ -43,8 +43,10 @@ def create_triage_agent():
     llm = get_llm()
     
     def classify_request(state: AgentState):
-        """Classify the request and extract service name."""
-        user_input = state["messages"][-1]['content']
+        # Helper to get content from object or dict (LangGraph Studio vs CLI compatibility)
+        last_msg = state["messages"][-1]
+        user_input = last_msg.content if hasattr(last_msg, "content") else last_msg["content"]
+        
         current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
         messages = [
@@ -63,8 +65,9 @@ def create_triage_agent():
 
     def fetch_logs_node(state: AgentState):
         """Fetch logs for the identified service."""
-
-        user_input = state["messages"][-1]['content']
+        # Helper to get content from object or dict
+        last_msg = state["messages"][-1]
+        user_input = last_msg.content if hasattr(last_msg, "content") else last_msg["content"]
         current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
         messages = [
@@ -72,7 +75,7 @@ def create_triage_agent():
             HumanMessage(content=f"Input: {user_input}")
         ]
         response = llm.invoke(messages)
-        service_name = response.text
+        service_name = response.content
 
         # service_name = state["service_name"] # Already extracted
         logs = mock_get_service_logs.invoke(service_name)
