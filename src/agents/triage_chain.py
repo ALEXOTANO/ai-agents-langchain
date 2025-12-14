@@ -158,7 +158,8 @@ def run_triage_agent(input_text: str):
     Run the Triage agent.
     """
     agent = create_triage_agent()
-    
+    # print(agent.get_graph().draw_ascii())
+
     initial_state = {
         "messages": [HumanMessage(content=input_text)],
         "logs": "",
