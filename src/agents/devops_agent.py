@@ -140,6 +140,8 @@ def run_devops_agent(problem: str, use_local: bool | None = None):
         "metrics": "",   # Not explicitly used by this agent's logic but required by state
         "service_name": ""
     }
+
+    # config = {"configurable": {"thread_id": "user_session_123"}}
     
     # Run the agent
     result = agent.invoke(initial_state)
