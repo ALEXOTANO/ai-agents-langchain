@@ -133,6 +133,8 @@ def run_devops_agent(problem: str, use_local: bool | None = None):
         Final response from the agent
     """
     agent = create_devops_agent()
+
+    # print(agent.get_graph().draw_ascii())
     
     initial_state = {
         "messages": [HumanMessage(content=problem)],
