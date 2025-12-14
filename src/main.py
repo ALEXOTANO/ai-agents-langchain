@@ -22,7 +22,7 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  python -m src.main triage "El servicio de pagos va lento"
+  python -m src.main triage "El servicio de pagos está lento"
   python -m src.main fixer "Hay alta latencia en el servicio de pagos, soluciónalo"
         """
     )

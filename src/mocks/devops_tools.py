@@ -94,7 +94,7 @@ def mock_scale_service(service_name: str) -> str:
     return f"Success: Scaled {service_name}, added 10 replicas. Now everything is working fine."
 
 
-@tool   
+@tool
 def mock_restart_service(service_name: str) -> str:
     """
     Reinicia un servicio.
